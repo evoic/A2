@@ -1,3 +1,3 @@
 # A2
-Code for "Enhancing Multimodal Anomaly Detection via Asymmetric Dual-Branch Reverse Distillation".
+Code for A2RD.
 Full release after publication.
