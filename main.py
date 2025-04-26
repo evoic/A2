@@ -111,19 +111,19 @@ def infer_A2(args):
     image_rocauc = roc_auc_score(np.stack(image_labels), np.stack(image_preds))
     result_file_name = f'{args.quantitative_folder}/{args.class_name}_{args.epochs_no}ep_{args.batch_size}bs.md'
     title_string = f'Metrics for class {args.class_name} with {args.epochs_no}ep_{args.batch_size}bs'
-    header_string = 'AUPRO@30% & AUPRO@10% & AUPRO@5% & AUPRO@1% & P-AUROC & I-AUROC'
+    header_string = 'AUPRO & P-AUROC & I-AUROC'
     results_string = f'{au_pros[0]:.3f} & {au_pros[1]:.3f} & {au_pros[2]:.3f} & {au_pros[3]:.3f} & {pixel_rocauc:.3f} & {image_rocauc:.3f}'
     if not os.path.exists(args.quantitative_folder):
         os.makedirs(args.quantitative_folder)
     with open(result_file_name, "w") as markdown_file:
         markdown_file.write(title_string + '\n' + header_string + '\n' + results_string)
     print(title_string)
-    print("AUPRO@30% | AUPRO@10% | AUPRO@5% | AUPRO@1% | P-AUROC | I-AUROC")
+    print("AUPRO@ | P-AUROC | I-AUROC")
     print(
-        f'  {au_pros[0]:.3f}   |   {au_pros[1]:.3f}   |   {au_pros[2]:.3f}  |   {au_pros[3]:.3f}  |   {pixel_rocauc:.3f} |   {image_rocauc:.3f}',
+        f'  {au_pros[0]:.3f}   |   {pixel_rocauc:.3f} |   {image_rocauc:.3f}',
         end='\n')
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Make inference with Crossmodal Feature Networks (A2s) on a dataset.')
+    parser = argparse.ArgumentParser(description='Make inference with A2RD.')
     parser.add_argument('--dataset_path', default='./mv3d_pro', 
                         type=str, help='Dataset path.')
     parser.add_argument('--class_name', default="cable_gland", type=str,
@@ -138,9 +138,9 @@ if __name__ == '__main__':
                         help='Path to the folder in which to save the qualitatives.')
     parser.add_argument('--quantitative_folder', default='./results/quantitatives_mvtec', type=str,
                         help='Path to the folder in which to save the quantitatives.')
-    parser.add_argument('--epochs_no', default=30, type=int,
+    parser.add_argument('--epochs_no', default=100, type=int,
                         help='Number of epochs to train the A2s.')
-    parser.add_argument('--batch_size', default=2, type=int,
+    parser.add_argument('--batch_size', default=8, type=int,
                         help='Batch dimension. Usually 16 is around the max.')
     parser.add_argument('--visualize_plot', default=False, action='store_true',
                         help='Whether to show plot or not.')
